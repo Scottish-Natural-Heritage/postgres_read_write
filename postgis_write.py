@@ -19,13 +19,16 @@ engine = create_engine(conn_str, echo=True)
 connection = engine.connect()
 
 # read in dataframe to be uploaded as pandas dataframe, no dtypes declared
-df = pd.read_csv("text.csv", encoding='UTF-8')
+df = pd.read_csv("sitesummary.csv", encoding='cp1252')
 
-# drop unwanted columns and set column names to lower case
-df = df.drop([i for i in df.columns if 'value' in i], axis=1)
+# drop 'Unnamed' columns and set column names to lower case for usability in postgres
+df = df.drop([i for i in df.columns if 'Unnamed' in i], axis=1)
 df = df.rename(columns=str.lower)
+df.columns = df.columns.str.replace(' ', '_')
 
 # convert gridref column to string, remove white space
+df = df[~df['grid_reference'].isnull()]
+df = df[~df['uid'].isnull()]
 df = df.astype({'grid_reference': 'string'})
 df['grid_reference'] = df['grid_reference'].str.replace(' ', '')
 
@@ -35,6 +38,7 @@ df['northing'] = df['grid_reference'].apply(lambda x: osgb.parse_grid(x)[1] if r
 
 # convert dataframe to geodataframe with geom column
 gdf = gpd.GeoDataFrame(df, geometry= gpd.points_from_xy(df.easting, df.northing), crs='EPSG:27700')
+gdf = gdf[~gdf.geometry.is_empty]
 
-# export to database using gpd.to_postgis
-gdf.to_postgis(name='test_table', schema='public', con=engine, if_exists:'replace')
+# export to database using gpd.to_postgis, note this will drop existing table and replace
+gdf.to_postgis(name='site_summary', schema='public', con=engine, if_exists='replace')
