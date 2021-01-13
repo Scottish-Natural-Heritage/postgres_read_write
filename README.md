@@ -26,6 +26,6 @@ gdf = gpd.read_postgis(sql, connection, geom_col='geometry', crs='EPSG:27700')
 ```
 and write:
 ```
-gdf.to_postgis(name='test_table', schema='public', con=engine, if_exists:'replace')
+gdf.to_postgis(name='test_table', schema='public', con=engine, if_exists='replace')
 ```
 to postgres database.
