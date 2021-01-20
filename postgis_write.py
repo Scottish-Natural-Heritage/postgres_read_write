@@ -6,6 +6,7 @@ import geopandas as gpd
 import osgb
 import re
 import numpy as np
+import sys
 
 """
 Outline script to add geometry column to dataframe from grid reference values,
@@ -19,7 +20,7 @@ engine = create_engine(conn_str, echo=True)
 connection = engine.connect()
 
 # read in dataframe to be uploaded as pandas dataframe, no dtypes declared
-df = pd.read_csv("sitesummary.csv", encoding='cp1252')
+df = pd.read_csv(sys.argv[1], encoding='cp1252')
 
 # drop 'Unnamed' columns and set column names to lower case for usability in postgres
 df = df.drop([i for i in df.columns if 'Unnamed' in i], axis=1)
