@@ -33,7 +33,6 @@ ipykernel @ file:///D:/bld/ipykernel_1607737448354/work/dist/ipykernel-5.4.2-py3
 ipython @ file:///D:/bld/ipython_1604159844946/work
 ipython-genutils==0.2.0
 jedi @ file:///D:/bld/jedi_1610146948662/work
-Jinja2==2.11.2
 joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1607956439537/work
 json5 @ file:///home/conda/feedstock_root/build_artifacts/json5_1600692310011/work
 jsonschema @ file:///home/conda/feedstock_root/build_artifacts/jsonschema_1602551949684/work
